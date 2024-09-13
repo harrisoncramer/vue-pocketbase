@@ -25,3 +25,7 @@ dist-ssr
 
 pb_data/*
 pb_migrations/*
+
+tsconfig.app.tsbuildinfo
+tsconfig.node.tsbuildinfo
+pb_public/*

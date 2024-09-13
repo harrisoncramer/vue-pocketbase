@@ -13,6 +13,9 @@ export default defineConfig({
     vue(),
     vueDevTools(),
   ],
+  build: {
+    outDir: "pb_public",
+  },
   resolve: {
     alias: {
       '@': SRC,
