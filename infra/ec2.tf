@@ -57,7 +57,7 @@ output "instance_ip_addr" {
   value = aws_instance.my_ec2.public_ip
 }
 
-# Output the SSH URL to connect to the EC2 instance
-output "ssh_url" {
+# Output the SSH settings to connect to the EC2 instance
+output "ssh" {
   value = "ssh -i ~/.ssh/ec2-key-pair.pem ec2-user@${aws_instance.my_ec2.public_dns}"
 }
