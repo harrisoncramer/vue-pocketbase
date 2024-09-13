@@ -2,7 +2,7 @@
   <h2 class="text-2xl font-bold mb-4">
     Register for X
   </h2>
-  <form @submit.prevent="createUser">
+  <form @submit.prevent="register">
     <form>
       <div class="grid grid-cols-1 gap-6">
         <label class="block">
@@ -49,39 +49,21 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import useAuthStore from '@/stores/useAuthStore'
-import { pocketBaseSymbol } from '@/symbols/injectionSymbols'
 
-const $pb = inject(pocketBaseSymbol)
-
-const username = ref("")
 const email = ref("")
 const password = ref("")
 const passwordConfirm = ref("")
 
-const authStore = useAuthStore()
-const createUser = async () => {
-  try {
-    const user = await $pb.collection("users").create({
-      username: username.value,
-      email: email.value,
-      password: password.value,
-      passwordConfirm: passwordConfirm.value
-    })
-    if (!user) {
-      console.log("No user found")
-      return
-    }
-    await authStore.login(email.value, password.value)
-  } catch (error) {
-    console.log(error)
-  }
-}
-
 const router = useRouter()
+
+const authStore = useAuthStore()
+async function register () {
+  await authStore.register(email.value, password.value, passwordConfirm.value)
+}
 
 async function goToLogin () {
   await router.push({ name: 'login' })

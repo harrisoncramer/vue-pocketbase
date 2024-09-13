@@ -17,6 +17,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+
+    /* NodeJS settings */
+    "types": ["node"]
   },
   "include": ["vite.config.ts"]
 }
+

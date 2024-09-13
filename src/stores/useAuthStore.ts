@@ -15,7 +15,7 @@ const useAuthStore = defineStore('authStore', () => {
 
   async function login (email: string, password: string) {
     try {
-      const userData = await $pb
+      const userData = await $pb!
           .collection("users")
           .authWithPassword(email, password)
       if (userData) {
@@ -38,8 +38,26 @@ const useAuthStore = defineStore('authStore', () => {
   async function logout () {
     username.value = ""
     userId.value = ""
-    $pb.authStore.clear()
+    $pb!.authStore.clear()
     await router.push({ name: "login" })
+  }
+
+  async function register (email: string, password: string, passwordConfirm: string) {
+  try {
+    const user = await $pb!.collection("users").create({
+      username: username.value,
+      email,
+      password,
+      passwordConfirm,
+    })
+    if (!user) {
+      console.log("No user found")
+      return
+    }
+    await login(email, password)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return {
@@ -47,6 +65,7 @@ const useAuthStore = defineStore('authStore', () => {
     userId,
     isLoggedIn,
     login,
+    register,
     logout,
   }
 })
