@@ -3,47 +3,49 @@
     Register for X
   </h2>
   <form @submit.prevent="createUser">
-    <div class="grid grid-cols-1 gap-6">
-      <label class="block">
-        <span>Email</span>
-        <input
-          v-model="email"
-          type="email"
-          class="mt-1 block w-full"
+    <form>
+      <div class="grid grid-cols-1 gap-6">
+        <label class="block">
+          <span>Email</span>
+          <input
+            v-model="email"
+            type="email"
+            class="mt-1 block w-full"
+          >
+        </label>
+        <label class="block">
+          <span>Password</span>
+          <input
+            v-model="password"
+            type="password"
+            class="mt-1 block w-full"
+          >
+        </label>
+        <label class="block">
+          <span>Repeat Password</span>
+          <input
+            v-model="passwordConfirm"
+            type="password"
+            class="mt-1 block w-full"
+          >
+        </label>
+      </div>
+      <div class="flex gap-2 justify-center">
+        <button
+          type="submit"
+          class="mt-4 text-white desktop-xl:text-2xl bg-black px-4 py-2 border-2 rounded border-black hover:bg-white dark:hover:bg-main-dark-bg hover:text-black"
         >
-      </label>
-      <label class="block">
-        <span>Password</span>
-        <input
-          v-model="password"
-          type="password"
-          class="mt-1 block w-full"
-        >
-      </label>
-      <label class="block">
-        <span>Repeat Password</span>
-        <input
-          v-model="passwordConfirm"
-          type="password"
-          class="mt-1 block w-full"
-        >
-      </label>
-    </div>
-    <div class="flex gap-2 justify-center">
-      <button
-        type="submit"
-        class="mt-4 text-white desktop-xl:text-2xl bg-black px-4 py-2 border-2 rounded border-black hover:bg-white dark:hover:bg-main-dark-bg hover:text-black"
-      >
-        Sign Up
-      </button>
-      <button
-        class="mt-4 text-white desktop-xl:text-2xl bg-black px-4 py-2 border-2 rounded border-black hover:bg-white dark:hover:bg-main-dark-bg hover:text-black"
-        @click.prevent="goToLogin"
-      >
-        Login
-      </button>
-    </div>
+          Sign Up
+        </button>
+      </div>
+    </form>
   </form>
+  <button
+    class="mt-4 text-white desktop-xl:text-2xl bg-black px-4 py-2 border-2 rounded border-black hover:bg-white dark:hover:bg-main-dark-bg hover:text-black"
+    @click.prevent="goToLogin"
+  >
+    Login
+  </button>
 </template>
 
 <script setup lang="ts">
