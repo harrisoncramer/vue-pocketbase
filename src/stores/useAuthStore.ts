@@ -39,7 +39,7 @@ const useAuthStore = defineStore('authStore', () => {
     username.value = ""
     userId.value = ""
     $pb.authStore.clear()
-    await router.push({ path: "/" })
+    await router.push({ name: "login" })
   }
 
   return {

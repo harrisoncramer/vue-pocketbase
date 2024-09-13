@@ -13,7 +13,7 @@ const routes = [
     beforeEnter: enforceAuthentication, // Authenticated routes...
     children: [
       {
-        path: '/dashboard',
+        path: '/',
         name: 'dashboard',
         component: Dashboard,
       },
