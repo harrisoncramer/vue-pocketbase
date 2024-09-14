@@ -62,4 +62,4 @@ tasks:
     dir: infra
     dotenv: ['../.env.production', '../client/.env.production']
     cmds:
-      - 'open $(terraform output -raw instance_ip_addr)'
+      - open "http://$(terraform output -raw instance_ip_addr)"

@@ -1,5 +1,4 @@
 <template>
-  Hello!
   <button @click="logout">
     Log out
   </button>
