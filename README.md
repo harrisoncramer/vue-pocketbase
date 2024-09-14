@@ -12,7 +12,7 @@ Install the additional dependencies (assuming MacOS operating system) via the `b
 bin/setup
 ```
 
-Then run the taskfile:
+# Development
 
 ```bash
 task dev
