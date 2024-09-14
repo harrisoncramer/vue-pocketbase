@@ -11,6 +11,8 @@ bin/dev
 # Production
 
 ```bash
-git clone https://github.com/harrisoncramer/vue-pocketbase.git && cd vue-pocketbase
-bin/prod # Builds and runs the server on :8090
+bin/build
+bin/deploy
+bin/connect
+$ sudo ./pocketbase-prod serve --http="0.0.0.0:8090"
 ```

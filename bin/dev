@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# Pocketbase compiled for MacOS!
-
-npx --yes concurrently "./pocketbase-dev serve" "npm run dev"
