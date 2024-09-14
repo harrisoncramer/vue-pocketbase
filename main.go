@@ -1,4 +1,3 @@
-// main.go
 package main
 
 import (
@@ -12,7 +11,6 @@ import (
 func main() {
 	app := pocketbase.New()
 
-	// add a custom route
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		e.Router.GET("/pb-demo/api/hello", func(c echo.Context) error {
 			return c.String(200, "Hello world!")

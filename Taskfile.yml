@@ -1,19 +1,21 @@
 version: "3"
 tasks:
   dev:
-    deps: [server, client]
+    deps: [dev:server, dev:client] # Run both servers in watch mode...
   build:
     deps: [build:client, build:server]
   dev:client:
     cmds:
+      - cd client && pnpm install
       - cd client && pnpm run dev
   dev:server:
     cmds:
-      - go run main.go serve --http=127.0.0.1:8080
+      - air serve --http=127.0.0.1:8080
   build:server:
     cmds:
       - go build -o pocketbase
   build:client:
     cmds:
+      - cd client && pnpm install
       - cd client && pnpm run build
 

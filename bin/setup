@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Installs dependencies if they do not yet exist
+
+brew install go-task/tap/go-task
+go install github.com/air-verse/air@latest
+curl -fsSL https://get.pnpm.io/install.sh | sh -
