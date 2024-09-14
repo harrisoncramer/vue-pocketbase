@@ -7,14 +7,14 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 const __dirname = import.meta.dirname
 const SRC = path.join(__dirname, 'src')
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     vueDevTools(),
   ],
   build: {
-    outDir: "pb_public",
+    outDir: "../pb_public",
+    emptyOutDir: true,
   },
   resolve: {
     alias: {

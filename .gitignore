@@ -30,7 +30,7 @@ pocketbase
 
 tsconfig.app.tsbuildinfo
 tsconfig.node.tsbuildinfo
-pb_public/*
+client/pb_public/*
 tmp/*
 
 # Terraform files

@@ -22,11 +22,12 @@ func main() {
 	})
 
 	// Serves static files
-	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS("./pb_public"), false))
-
-		return nil
-	})
+	if os.Getenv("ENV") == "production" {
+		app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+			e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS("./pb_public"), true))
+			return nil
+		})
+	}
 
 	if err := app.Start(); err != nil {
 		log.Fatal(err)

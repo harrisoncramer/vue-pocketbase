@@ -1,6 +1,6 @@
 <template>
   <h2 class="text-2xl font-bold mb-4">
-    Login to X
+    Login to Your Site
   </h2>
   <form @submit.prevent="login">
     <div class="grid grid-cols-1 gap-6">
