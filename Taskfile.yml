@@ -1,10 +1,8 @@
 version: "3"
+dotenv: ['{{ .ENV }}.env']
 vars:
-  KEY_NAME: "ec2-key-pair"
   SSH_ADDRESS:
     sh: cd infra && terraform output -raw ssh_address
-  GOARCH: arm64
-  GOOS: linux
 tasks:
   dev:
     deps:
@@ -17,7 +15,7 @@ tasks:
       - pnpm run dev
   dev:server:
     cmds:
-      - air serve --http=127.0.0.1:8080
+      - "air serve --http=$VITE_POCKETBASE_URL"
   build:
     deps:
       - build:client
@@ -29,7 +27,12 @@ tasks:
       - pnpm run build
   build:server:
     cmds:
-      - GOOS={{ .GOOS }} GOARCH={{ .GOARCH }} CGO_ENABLED=0 go build -o pocketbase
+      - GOOS=$GOOS GOARCH=$GOARCH CGO_ENABLED=0 go build -o pocketbase
+  serve:
+    deps:
+      - build
+    cmds:
+      - ENV=production ./pocketbase serve
   connect:
     dir: infra
     cmds:
@@ -38,17 +41,17 @@ tasks:
     deps:
       - build
     cmds:
-      - rsync -av -e "ssh -i ~/.ssh/{{ .KEY_NAME }}.pem" pb_public pocketbase pb_migrations "ec2-user@{{ .SSH_ADDRESS }}:/home/ec2-user/"
+      - rsync -av -e "ssh -i ~/.ssh/{{ .KEY_NAME }}.pem" pb_public pocketbase pb_migrations Taskfile.yml "ec2-user@{{ .SSH_ADDRESS }}:/home/ec2-user/"
   infra:build:
     dir: infra
     cmds:
-      - terraform init -var="key_name={{ .KEY_NAME }}"
-      - terraform apply -var="key_name={{ .KEY_NAME }}"
+      - terraform init -var="key_name=$KEY_NAME"
+      - terraform apply -var="key_name=$KEY_NAME"
   infra:destroy:
     dir: infra
     cmds:
-      - terraform destroy -var="key_name={{ .KEY_NAME }}"
+      - terraform destroy -var="key_name=$KEY_NAME"
   open:
     dir: infra
     cmds:
-      - terraform output -raw instance_ip_addr
+      - open $(terraform output -raw instance_ip_addr)

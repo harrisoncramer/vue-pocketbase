@@ -23,7 +23,7 @@ task dev
 Build and send the assets to the server:
 
 ```bash
-task deploy
-task connect
-ENV=production ./pocketbase serve --http="0.0.0.0:8080"
+task prod:deploy
+task prod:connect
+task prod:serve
 ```
