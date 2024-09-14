@@ -7,15 +7,19 @@ terraform {
   }
 }
 
+variable "key_name" {
+  default = "ec2-key-pair"
+}
+
 provider "aws" {
   region = "us-east-1"
 }
 
 # Define an EC2 instance resource with specific attributes
 resource "aws_instance" "my_ec2" {
-  ami                    = "ami-0182f373e66f89c85"
-  instance_type          = "t2.micro"
-  key_name               = "ec2-key-pair"
+  ami                    = "ami-0b947c5d5516fa06e" # ARM Archicture...
+  instance_type          = "t4g.nano"
+  key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
   tags = {
     Name = "MyEC2Instance"
@@ -27,10 +31,18 @@ resource "aws_security_group" "ec2_sg" {
   name        = "ec2_sg"
   description = "Allow Internet access to port 8090"
 
-  # Expose port 8090 to incoming traffic
+  # Expose port 80 to incoming traffic
   ingress {
-    from_port   = 8090
-    to_port     = 8090
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Expose port 443 to incoming traffic
+  ingress {
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -59,5 +71,14 @@ output "instance_ip_addr" {
 
 # Output the SSH settings to connect to the EC2 instance
 output "ssh" {
-  value = "ssh -i ~/.ssh/ec2-key-pair.pem ec2-user@${aws_instance.my_ec2.public_dns}"
+  value = "ssh -i ~/.ssh/${var.key_name}.pem ec2-user@${aws_instance.my_ec2.public_dns}"
+}
+
+# Public DNS (for SSH)
+output "ssh_address" {
+  value = aws_instance.my_ec2.public_dns
+}
+
+output "key_name" {
+  value = var.key_name
 }

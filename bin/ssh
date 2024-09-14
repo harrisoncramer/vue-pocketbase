@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cd ./infra && exec $(terraform output -raw ssh)
