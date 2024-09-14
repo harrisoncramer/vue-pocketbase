@@ -25,6 +25,9 @@ dist-ssr
 
 pb_data/*
 
+# Ignore binary
+pocketbase
+
 tsconfig.app.tsbuildinfo
 tsconfig.node.tsbuildinfo
 pb_public/*
@@ -42,3 +45,4 @@ override.tf
 override.tf.json
 terraform.rc
 terraform.rc.json
+

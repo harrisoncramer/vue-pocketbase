@@ -18,7 +18,7 @@ provider "aws" {
 
 # Define an EC2 instance resource with specific attributes
 resource "aws_instance" "my_ec2" {
-  ami                    = "ami-0b947c5d5516fa06e" # ARM Archicture...
+  ami                    = "ami-0b947c5d5516fa06e" # ARM Architecture
   instance_type          = "t4g.nano"
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]

@@ -8,10 +8,6 @@ tasks:
     deps:
       - dev:server
       - dev:client # Run both servers in watch mode...
-  build:
-    deps:
-      - build:client
-      - build:server
   dev:client:
     cmds:
       - cd client && pnpm install
@@ -19,13 +15,17 @@ tasks:
   dev:server:
     cmds:
       - air serve --http=127.0.0.1:8080
-  build:server:
-    cmds:
-      - go build -o pocketbase
+  build:
+    deps:
+      - build:client
+      - build:server
   build:client:
     cmds:
       - cd client && pnpm install
       - cd client && pnpm run build
+  build:server:
+    cmds:
+      - GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -o pocketbase
   connect:
     cmds:
       - cd ./infra && exec $(terraform output -raw ssh)
