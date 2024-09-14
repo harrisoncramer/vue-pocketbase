@@ -4,7 +4,6 @@ import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
-const __dirname = import.meta.dirname
 const SRC = path.join(__dirname, 'src')
 
 export default defineConfig({

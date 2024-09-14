@@ -1,60 +1,69 @@
 version: "3"
-dotenv: ['.development.env']
 vars:
   SSH_ADDRESS:
     sh: cd infra && terraform output -raw ssh_address
+  CURRENT_OS:
+    sh: uname
 tasks:
   dev:
     deps:
       - dev:server
       - dev:client # Run both servers in watch mode...
   dev:client:
+    dotenv: ['.env.development']
     dir: client
     cmds:
       - pnpm install
       - pnpm run dev
   dev:server:
+    dotenv: ['.env.development']
     cmds:
       - "air serve --http=$VITE_POCKETBASE_URL"
   build:
-    dotenv: ['.production.env']
     deps:
       - build:client
       - build:server
   build:client:
-    dotenv: ['.production.env']
+    dotenv: ['.env.production']
     dir: client
     cmds:
       - pnpm install
       - pnpm run build
   build:server:
-    dotenv: ['.production.env']
+    dotenv: ['.env.production']
     cmds:
       - GOOS=$GOOS GOARCH=$GOARCH CGO_ENABLED=0 go build -o pocketbase
+  serve:
+    dotenv: ['.env.production']
+    cmds:
+      - STATIC=true ./pocketbase serve --http=$VITE_POCKETBASE_URL
+    preconditions:
+      - sh: '[ "{{ .CURRENT_OS }}" == "Darwin" ] ]'
+        msg: MacOS cannot run the production binary
   connect:
-    dotenv: ['.production.env']
+    dotenv: ['.env.production']
     dir: infra
     cmds:
       - exec $(terraform output -raw ssh)
   deploy:
-    dotenv: ['.production.env']
+    dotenv: ['.env.production']
     deps:
       - build
     cmds:
       - rsync -av -e "ssh -i ~/.ssh/{{ .KEY_NAME }}.pem" pb_public pocketbase pb_migrations Taskfile.yml "ec2-user@{{ .SSH_ADDRESS }}:/home/ec2-user/"
   infra:build:
-    dotenv: ['.production.env']
+    dotenv: ['.env.production']
     dir: infra
     cmds:
       - terraform init -var="key_name=$KEY_NAME"
       - terraform apply -var="key_name=$KEY_NAME"
   infra:destroy:
-    dotenv: ['.production.env']
+    dotenv: ['.env.production']
     dir: infra
     cmds:
       - terraform destroy -var="key_name=$KEY_NAME"
   open:
-    dotenv: ['.production.env']
+    dotenv: ['.env.production']
     dir: infra
     cmds:
       - open $(terraform output -raw instance_ip_addr)

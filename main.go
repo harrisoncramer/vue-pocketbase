@@ -22,7 +22,7 @@ func main() {
 	})
 
 	// Serves static files
-	if os.Getenv("ENV") != "development" {
+	if os.Getenv("STATIC") != "" {
 		app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 			e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS("./pb_public"), true))
 			return nil

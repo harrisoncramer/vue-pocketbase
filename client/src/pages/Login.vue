@@ -51,7 +51,6 @@ const router = useRouter()
 
 const authStore =useAuthStore()
 async function login () {
-  console.log("Logging in...")
   await authStore.login(email.value, password.value)
 }
 
