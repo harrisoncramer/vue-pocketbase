@@ -1,8 +1,10 @@
 version: "3"
 vars:
-  KEY_NAME: "ec2-key-pair"
+  KEY_NAME: ec2-key-pair
   SSH_ADDRESS:
     sh: cd ./infra && terraform output -raw ssh_address
+  GOARCH: arm64
+  GOOS: linux
 tasks:
   dev:
     deps:
@@ -25,7 +27,7 @@ tasks:
       - cd client && pnpm run build
   build:server:
     cmds:
-      - GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -o pocketbase
+      - GOOS={{ .GOOS }} GOARCH={{ .GOARCH }} CGO_ENABLED=0 go build -o pocketbase
   connect:
     cmds:
       - cd ./infra && exec $(terraform output -raw ssh)
