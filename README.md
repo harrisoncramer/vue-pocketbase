@@ -25,5 +25,5 @@ Build and send the assets to the server:
 ```bash
 task deploy
 task connect
-./pocketbase serve # In the EC2 Instance..
+$ STATIC=true ./pocketbase serve # In the server
 ```

@@ -35,7 +35,7 @@ resource "aws_security_group" "ec2_sg" {
   # Expose port 80 to incoming traffic
   ingress {
     from_port   = 80
-    to_port     = 8100
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
