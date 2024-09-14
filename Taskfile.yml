@@ -1,9 +1,13 @@
 version: "3"
 tasks:
   dev:
-    deps: [dev:server, dev:client] # Run both servers in watch mode...
+    deps:
+      - dev:server
+      - dev:client # Run both servers in watch mode...
   build:
-    deps: [build:client, build:server]
+    deps:
+      - build:client
+      - build:server
   dev:client:
     cmds:
       - cd client && pnpm install
@@ -18,4 +22,8 @@ tasks:
     cmds:
       - cd client && pnpm install
       - cd client && pnpm run build
+  infra:
+    cmds:
+      - cd infra && terraform init
+      - cd infra && terraform apply
 

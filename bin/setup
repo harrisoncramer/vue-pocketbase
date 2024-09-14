@@ -5,3 +5,5 @@
 brew install go-task/tap/go-task
 go install github.com/air-verse/air@latest
 curl -fsSL https://get.pnpm.io/install.sh | sh -
+brew tap hashicorp/tap
+brew install hashicorp/tap/terraform
