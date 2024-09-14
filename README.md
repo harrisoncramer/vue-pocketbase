@@ -2,9 +2,11 @@
 
 This repository contains code for spinning up a [Pocketbase](https://pocketbase.io/) server/db with Vue!
 
-# Development
+# Requirements
 
-Install the dependencies:
+Assumes that you have `brew` and `curl` for installing dependencies, and `go` for running code.
+
+Install the additional dependencies (assuming MacOS operating system) via the `bin/setup` script:
 
 ```bash
 bin/setup
