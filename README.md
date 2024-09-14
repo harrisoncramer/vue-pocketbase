@@ -15,3 +15,11 @@ Then run the taskfile:
 ```bash
 task dev
 ```
+
+# Production
+
+Build and send the assets to the server:
+
+```bash
+task deploy
+```
