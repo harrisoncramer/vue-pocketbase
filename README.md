@@ -4,6 +4,14 @@ This repository contains code for spinning up a [Pocketbase](https://pocketbase.
 
 # Development
 
+Install the dependencies:
+
+```bash
+bin/setup
+```
+
+Then run the taskfile:
+
 ```bash
 task dev
 ```
