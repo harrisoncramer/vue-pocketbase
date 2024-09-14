@@ -2,7 +2,7 @@ version: "3"
 vars:
   KEY_NAME: "ec2-key-pair"
   SSH_ADDRESS:
-    sh: cd ./infra && terraform output -raw ssh_address
+    sh: cd infra && terraform output -raw ssh_address
   GOARCH: arm64
   GOOS: linux
 tasks:
@@ -11,9 +11,10 @@ tasks:
       - dev:server
       - dev:client # Run both servers in watch mode...
   dev:client:
+    dir: client
     cmds:
-      - cd client && pnpm install
-      - cd client && pnpm run dev
+      - pnpm install
+      - pnpm run dev
   dev:server:
     cmds:
       - air serve --http=127.0.0.1:8080
@@ -22,27 +23,32 @@ tasks:
       - build:client
       - build:server
   build:client:
+    dir: client
     cmds:
-      - cd client && pnpm install
-      - cd client && pnpm run build
+      - pnpm install
+      - pnpm run build
   build:server:
     cmds:
       - GOOS={{ .GOOS }} GOARCH={{ .GOARCH }} CGO_ENABLED=0 go build -o pocketbase
   connect:
+    dir: infra
     cmds:
-      - cd ./infra && exec $(terraform output -raw ssh)
+      - exec $(terraform output -raw ssh)
   deploy:
     deps:
       - build
     cmds:
       - rsync -av -e "ssh -i ~/.ssh/{{ .KEY_NAME }}.pem" pb_public pocketbase pb_migrations "ec2-user@{{ .SSH_ADDRESS }}:/home/ec2-user/"
   infra:build:
+    dir: infra
     cmds:
-      - cd infra && terraform init -var="key_name={{ .KEY_NAME }}"
-      - cd infra && terraform apply -var="key_name={{ .KEY_NAME }}"
+      - terraform init -var="key_name={{ .KEY_NAME }}"
+      - terraform apply -var="key_name={{ .KEY_NAME }}"
   infra:destroy:
+    dir: infra
     cmds:
-      - cd infra && terraform destroy -var="key_name={{ .KEY_NAME }}"
+      - terraform destroy -var="key_name={{ .KEY_NAME }}"
   open:
+    dir: infra
     cmds:
-      - cd ./infra && terraform output -raw instance_ip_addr
+      - terraform output -raw instance_ip_addr
