@@ -10,13 +10,13 @@ tasks:
       - dev:server
       - dev:client # Run both servers in watch mode...
   dev:client:
-    dotenv: ['.env.development']
+    dotenv: ['.env.development', 'client/.env.development']
     dir: client
     cmds:
       - pnpm install
       - pnpm run dev
   dev:server:
-    dotenv: ['.env.development']
+    dotenv: ['.env.development', 'client/.env.development']
     cmds:
       - "air serve --http=$VITE_POCKETBASE_URL"
   build:
@@ -24,46 +24,46 @@ tasks:
       - build:client
       - build:server
   build:client:
-    dotenv: ['.env.production']
+    dotenv: ['.env.development', 'client/.env.development']
     dir: client
     cmds:
       - pnpm install
       - pnpm run build
   build:server:
-    dotenv: ['.env.production']
+    dotenv: ['.env.production', 'client/.env.production']
     cmds:
       - GOOS=$GOOS GOARCH=$GOARCH CGO_ENABLED=0 go build -o pocketbase
   serve:
-    dotenv: ['.env.production']
+    dotenv: ['.env.production', 'client/.env.production']
     cmds:
       - STATIC=true ./pocketbase serve --http=$VITE_POCKETBASE_URL
     preconditions:
       - sh: '[ "{{ .CURRENT_OS }}" == "Darwin" ] ]'
         msg: MacOS cannot run the production binary
   connect:
-    dotenv: ['.env.production']
+    dotenv: ['.env.production', 'client/.env.production']
     dir: infra
     cmds:
       - exec $(terraform output -raw ssh)
   deploy:
-    dotenv: ['.env.production']
+    dotenv: ['.env.production', 'client/.env.production']
     deps:
       - build
     cmds:
       - rsync -av -e "ssh -i ~/.ssh/{{ .KEY_NAME }}.pem" pb_public pocketbase pb_migrations Taskfile.yml "ec2-user@{{ .SSH_ADDRESS }}:/home/ec2-user/"
   infra:build:
-    dotenv: ['.env.production']
+    dotenv: ['.env.production', 'client/.env.production']
     dir: infra
     cmds:
       - terraform init -var="key_name=$KEY_NAME"
       - terraform apply -var="key_name=$KEY_NAME"
   infra:destroy:
-    dotenv: ['.env.production']
+    dotenv: ['.env.production', 'client/.env.production']
     dir: infra
     cmds:
       - terraform destroy -var="key_name=$KEY_NAME"
   open:
-    dotenv: ['.env.production']
+    dotenv: ['.env.production', 'client/.env.production']
     dir: infra
     cmds:
       - open $(terraform output -raw instance_ip_addr)
