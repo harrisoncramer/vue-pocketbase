@@ -1,0 +1,9 @@
+#!/bin/bash
+
+bin/build   # Build the application
+
+ADDRESS=$(cd ./infra && terraform output -raw ssh_address)
+KEY_NAME=$(cd ./infra && terraform output -raw key_name)
+
+# Pocketbase compiled for AWS' Linux 2 (AMD Architecture)
+rsync -av -e "ssh -i ~/.ssh/${KEY_NAME}.pem" pb_public pocketbase-prod pb_migrations "ec2-user@${ADDRESS}:/home/ec2-user/"
