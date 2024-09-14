@@ -28,17 +28,4 @@ pb_data/*
 tsconfig.app.tsbuildinfo
 tsconfig.node.tsbuildinfo
 pb_public/*
-
-
-# Terraform files
-*.tfstate
-*.tfstate.*
-*.tfvars
-*.tfvars.json
-.terraform/
-.terraform.lock.hcl
-crash.log
-override.tf
-override.tf.json
-terraform.rc
-terraform.rc.json
+tmp/*

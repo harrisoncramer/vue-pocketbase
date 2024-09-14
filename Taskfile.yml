@@ -1,12 +1,19 @@
 version: "3"
-
 tasks:
-  start:
+  dev:
+    deps: [server, client]
+  build:
+    deps: [build:client, build:server]
+  dev:client:
+    cmds:
+      - cd client && pnpm run dev
+  dev:server:
     cmds:
       - go run main.go serve --http=127.0.0.1:8080
-  dev:
+  build:server:
     cmds:
-      - air
-  build:
+      - go build -o pocketbase
+  build:client:
     cmds:
-      - pnpm run build
+      - cd client && pnpm run build
+
