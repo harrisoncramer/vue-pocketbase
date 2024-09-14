@@ -25,5 +25,5 @@ Build and send the assets to the server:
 ```bash
 task prod:deploy
 task prod:connect
-task prod:serve
+./pocketbase serve # In the EC2 Instance..
 ```
