@@ -8,7 +8,8 @@ terraform {
 }
 
 variable "key_name" {
-  default = "ec2-key-pair"
+  description = "The name of the key pair to be used for the EC2 instance"
+  type        = string
 }
 
 provider "aws" {
@@ -77,8 +78,4 @@ output "ssh" {
 # Public DNS (for SSH)
 output "ssh_address" {
   value = aws_instance.my_ec2.public_dns
-}
-
-output "key_name" {
-  value = var.key_name
 }

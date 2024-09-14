@@ -1,4 +1,8 @@
 version: "3"
+vars:
+  KEY_NAME: "ec2-key-pair"
+  SSH_ADDRESS:
+    sh: cd ./infra && terraform output -raw ssh_address
 tasks:
   dev:
     deps:
@@ -22,8 +26,15 @@ tasks:
     cmds:
       - cd client && pnpm install
       - cd client && pnpm run build
+  connect:
+    cmds:
+      - cd ./infra && exec $(terraform output -raw ssh)
+  deploy:
+    deps:
+      - build
+    cmds:
+      - 'rsync -av -e "ssh -i ~/.ssh/{{ .KEY_NAME }}.pem" pb_public pocketbase pb_migrations "ec2-user@{{ .SSH_ADDRESS }}:/home/ec2-user/"'
   infra:
     cmds:
       - cd infra && terraform init
-      - cd infra && terraform apply
-
+      - 'cd infra && terraform apply -var="key_name={{.KEY_NAME}}"'
