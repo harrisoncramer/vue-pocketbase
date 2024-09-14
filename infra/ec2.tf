@@ -30,12 +30,12 @@ resource "aws_instance" "my_ec2" {
 # Define a security group to allow access to port 8090
 resource "aws_security_group" "ec2_sg" {
   name        = "ec2_sg"
-  description = "Allow Internet access to port 8090"
+  description = "Allow Internet access"
 
   # Expose port 80 to incoming traffic
   ingress {
     from_port   = 80
-    to_port     = 8080
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

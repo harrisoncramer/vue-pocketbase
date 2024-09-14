@@ -1,6 +1,6 @@
 version: "3"
 vars:
-  KEY_NAME: ec2-key-pair
+  KEY_NAME: "ec2-key-pair"
   SSH_ADDRESS:
     sh: cd ./infra && terraform output -raw ssh_address
   GOARCH: arm64
@@ -35,8 +35,14 @@ tasks:
     deps:
       - build
     cmds:
-      - 'rsync -av -e "ssh -i ~/.ssh/{{ .KEY_NAME }}.pem" pb_public pocketbase pb_migrations "ec2-user@{{ .SSH_ADDRESS }}:/home/ec2-user/"'
-  infra:
+      - rsync -av -e "ssh -i ~/.ssh/{{ .KEY_NAME }}.pem" pb_public pocketbase pb_migrations "ec2-user@{{ .SSH_ADDRESS }}:/home/ec2-user/"
+  infra:build:
     cmds:
-      - cd infra && terraform init
-      - 'cd infra && terraform apply -var="key_name={{.KEY_NAME}}"'
+      - cd infra && terraform init -var="key_name={{ .KEY_NAME }}"
+      - cd infra && terraform apply -var="key_name={{ .KEY_NAME }}"
+  infra:destroy:
+    cmds:
+      - cd infra && terraform destroy -var="key_name={{ .KEY_NAME }}"
+  open:
+    cmds:
+      - cd ./infra && terraform output -raw instance_ip_addr
